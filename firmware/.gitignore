@@ -63,5 +63,7 @@ obj/
 
 sdkconfig
 sdkconfig.old
+sdkconfig.blublu*
+build_*/
 
 xiaozhi-esp32/

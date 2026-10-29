@@ -9,6 +9,10 @@
 #include <mooncake.h>
 #include <apps/apps.h>
 #include <hal/hal.h>
+#include <sdkconfig.h>
+#ifdef CONFIG_STACKCHAN_BLUBLU_PERIPHERAL
+#include <blublu/peripheral_main.h>
+#endif
 
 using namespace mooncake;
 using namespace smooth_ui_toolkit;
@@ -25,6 +29,11 @@ extern "C" void app_main(void)
     // Setup ui hal
     ui_hal::on_delay([](uint32_t ms) { GetHAL().delay(ms); });
     ui_hal::on_get_tick([]() { return GetHAL().millis(); });
+
+#ifdef CONFIG_STACKCHAN_BLUBLU_PERIPHERAL
+    // BluBlu peripheral mode, never returns
+    blublu::peripheral_main();
+#endif
 
     const bool skip_mooncake =
         GetHAL().getXiaozhiConfig().startAiAgentOnBoot && GetHAL().getWarmRebootTarget() < 0;

@@ -32,3 +32,15 @@ ctest --test-dir build-host-tests --output-on-failure
 ```bash
 idf.py flash
 ```
+
+### BluBlu peripheral mode
+
+Runs StackChan as a USB peripheral of the BluBlu agent (camera, head servos,
+avatar emotion; no xiaozhi / audio). Sources are in `main/blublu/`, options in
+the "StackChan BluBlu Peripheral" Kconfig menu.
+
+```bash
+idf.py -B build_blublu -DSDKCONFIG=sdkconfig.blublu \
+    -DSDKCONFIG_DEFAULTS="sdkconfig.defaults;sdkconfig.defaults.blublu" build
+idf.py -B build_blublu -DSDKCONFIG=sdkconfig.blublu flash
+```

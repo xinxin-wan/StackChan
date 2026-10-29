@@ -281,7 +281,12 @@ StackChanCamera::StackChanCamera(const esp_video_init_config_t& config)
 
     // 申请缓冲并mmap
     struct v4l2_requestbuffers req = {};
+#ifdef CONFIG_STACKCHAN_BLUBLU_PERIPHERAL
+    // Continuous capture: let DMA fill one buffer while the other is being copied
+    req.count = 2;
+#else
     req.count                      = strcmp(video_device_name, ESP_VIDEO_MIPI_CSI_DEVICE_NAME) == 0 ? 2 : 1;
+#endif
     req.type                       = V4L2_BUF_TYPE_VIDEO_CAPTURE;
     req.memory                     = V4L2_MEMORY_MMAP;
     if (ioctl(video_fd_, VIDIOC_REQBUFS, &req) != 0) {

@@ -1,0 +1,16 @@
+# BluBlu peripheral build overrides (applied on top of the normal sdkconfig)
+CONFIG_STACKCHAN_BLUBLU_PERIPHERAL=y
+CONFIG_STACKCHAN_BLUBLU_HOSTNAME="stackchan"
+CONFIG_STACKCHAN_BLUBLU_HTTP_PORT=80
+# Camera: VGA for snapshot, stream is decimated to QVGA on device
+CONFIG_CAMERA_GC0308_DVP_YUV422_640X480_16FPS=y
+# CONFIG_CAMERA_GC0308_DVP_YUV422_320X240_20FPS is not set
+# HTTP / WebSocket
+CONFIG_HTTPD_WS_SUPPORT=y
+CONFIG_LWIP_MAX_SOCKETS=16
+# USB link (USB-Serial-JTAG framed protocol) to the host, Wi-Fi off
+CONFIG_STACKCHAN_BLUBLU_USB_LINK=y
+# CONFIG_STACKCHAN_BLUBLU_WIFI is not set
+# Keep logs off USB-Serial-JTAG (UART0 only)
+CONFIG_ESP_CONSOLE_SECONDARY_NONE=y
+# CONFIG_ESP_CONSOLE_SECONDARY_USB_SERIAL_JTAG is not set

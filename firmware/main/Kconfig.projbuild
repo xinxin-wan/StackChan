@@ -11,6 +11,43 @@ config STACKCHAN_SERVER_URL
 
 endmenu
 
+menu "StackChan BluBlu Peripheral"
+
+config STACKCHAN_BLUBLU_PERIPHERAL
+    bool "Run as BluBlu peripheral (camera / head / emotion)"
+    default n
+    help
+        Skip the launcher and xiaozhi. Expose the camera (snapshot / MJPEG
+        stream), head servos and avatar emotion to the BluBlu host over the
+        USB link and/or Wi-Fi. Audio is not used on the device.
+
+config STACKCHAN_BLUBLU_HOSTNAME
+    string "mDNS hostname"
+    default "stackchan"
+    depends on STACKCHAN_BLUBLU_PERIPHERAL
+
+config STACKCHAN_BLUBLU_HTTP_PORT
+    int "HTTP API port"
+    default 80
+    depends on STACKCHAN_BLUBLU_PERIPHERAL
+
+config STACKCHAN_BLUBLU_USB_LINK
+    bool "USB link over USB-Serial-JTAG (framed protocol, no network interface)"
+    default y
+    depends on STACKCHAN_BLUBLU_PERIPHERAL && SOC_USB_SERIAL_JTAG_SUPPORTED
+    help
+        Serve the camera / head / emotion API as framed requests on the built-in
+        USB-Serial-JTAG CDC-ACM port (303a:1001). The host sees a serial port
+        (Android UsbManager, Linux /dev/ttyACM*, Windows COMx); its network is
+        not touched. Set ESP_CONSOLE_SECONDARY_NONE so logs do not mix in.
+
+config STACKCHAN_BLUBLU_WIFI
+    bool "Also connect Wi-Fi (HTTP / WebSocket API + mDNS)"
+    default n
+    depends on STACKCHAN_BLUBLU_PERIPHERAL
+
+endmenu
+
 menu "Xiaozhi Assistant"
 
 config OTA_URL

@@ -20,6 +20,11 @@ set(STACK_CHAN_INCLUDE_DIRS
 )
 list(APPEND STACK_CHAN_SOURCES main.cpp)
 
+if(CONFIG_STACKCHAN_BLUBLU_PERIPHERAL)
+    file(GLOB BLUBLU_SOURCES "blublu/*.cpp" "blublu/*.c")
+    list(APPEND STACK_CHAN_SOURCES ${BLUBLU_SOURCES})
+endif()
+
 # Define source files
 set(SOURCES "audio/audio_codec.cc"
             "audio/audio_service.cc"
@@ -297,6 +302,8 @@ idf_component_register(SRCS ${SOURCES}
                         esp_pm
                         esp_psram
                         esp_netif
+                        esp_http_server
+                        esp_driver_usb_serial_jtag
                         esp_driver_gpio
                         esp_driver_uart
                         esp_driver_spi

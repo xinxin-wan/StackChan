@@ -77,6 +77,34 @@ public:
     {
         return frame_.format;
     }
+
+    // Raw V4L2 access (used by the BluBlu peripheral capture pipeline)
+    int GetVideoFd() const
+    {
+        return video_fd_;
+    }
+    bool IsStreaming() const
+    {
+        return streaming_on_;
+    }
+    uint32_t GetSensorFormat() const
+    {
+        return sensor_format_;
+    }
+    size_t GetMmapBufferCount() const
+    {
+        return mmap_buffers_.size();
+    }
+    void* GetMmapBuffer(size_t index, size_t* length) const
+    {
+        if (index >= mmap_buffers_.size()) {
+            return nullptr;
+        }
+        if (length) {
+            *length = mmap_buffers_[index].length;
+        }
+        return mmap_buffers_[index].start;
+    }
 };
 
 #endif  // ndef CONFIG_IDF_TARGET_ESP32

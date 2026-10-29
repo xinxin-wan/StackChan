@@ -328,7 +328,14 @@ private:
 
     bool ShouldEnablePowerSave(bool has_external_power, bool is_discharging) const
     {
+#ifdef CONFIG_STACKCHAN_BLUBLU_PERIPHERAL
+        // Peripheral mode: never sleep or power off when idle
+        (void)has_external_power;
+        (void)is_discharging;
+        return false;
+#else
         return is_discharging || (has_external_power && xiaozhi_config_.allowShutdownWhenCharging);
+#endif
     }
 
     void UpdatePowerSaveEnabled(bool has_external_power, bool is_discharging)
@@ -627,7 +634,9 @@ public:
         charging                     = pmic_->IsCharging();
         discharging                  = pmic_->IsDischarging();
         if (discharging != last_discharging) {
+#ifndef CONFIG_STACKCHAN_BLUBLU_PERIPHERAL
             power_save_timer_->SetEnabled(discharging);
+#endif
             last_discharging = discharging;
         }
 
