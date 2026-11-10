@@ -33,15 +33,15 @@ struct EmotionAlias {
     const char* canonical;
 };
 
-// Canonical names: the 6 avatar emotions plus shy and speechless. Aliases follow xiaozhi's emotion names.
+// Canonical names: the 6 avatar emotions plus shy, speechless and surprise. Aliases follow xiaozhi's emotion names.
 const EmotionAlias kAliases[] = {
     {"neutral", "neutral"},  {"relaxed", "neutral"}, {"cool", "neutral"},     {"confident", "neutral"},
     {"happy", "happy"},      {"laughing", "happy"},  {"funny", "happy"},      {"loving", "happy"},
     {"winking", "happy"},    {"delicious", "happy"}, {"kissy", "happy"},      {"silly", "happy"},
     {"angry", "angry"},      {"sad", "sad"},         {"crying", "sad"},       {"embarrassed", "shy"},
     {"doubt", "doubt"},      {"doubtful", "doubt"},  {"thinking", "doubt"},   {"confused", "doubt"},
-    {"surprised", "doubt"},  {"shocked", "doubt"},   {"sleepy", "sleepy"},    {"shy", "shy"},
-    {"speechless", "speechless"}, {"awkward", "speechless"},
+    {"surprise", "surprise"}, {"surprised", "surprise"}, {"shocked", "surprise"}, {"sleepy", "sleepy"},
+    {"shy", "shy"},          {"speechless", "speechless"}, {"awkward", "speechless"},
 };
 
 // Names understood by StackChanAvatarDisplay::SetEmotion
@@ -52,6 +52,9 @@ const char* display_name(const std::string& canonical)
     }
     if (canonical == "shy") {
         return "happy";
+    }
+    if (canonical == "surprise") {
+        return "neutral";  // the avatar has no surprise; the emoji face covers it
     }
     return canonical.c_str();
 }
@@ -78,13 +81,18 @@ void clear_state_locked()
     g_state = State::Idle;
 }
 
-// Emoji face only while listening/thinking; otherwise the original avatar (with its blink) shows the emotion.
+// Emoji face while listening/thinking, and for surprise, which the avatar has no face for;
+// otherwise the original avatar (with its blink) shows the emotion.
 void refresh_face_locked()
 {
-    if (g_speaking || g_text_shown || g_state == State::Idle) {
+    if (g_text_shown) {
         emoji::hide();
-    } else {
+    } else if (!g_speaking && g_state != State::Idle) {
         emoji::show(g_state == State::Listening ? "listening" : "thinking");
+    } else if (g_emotion == "surprise") {
+        emoji::show("surprise");
+    } else {
+        emoji::hide();
     }
 }
 
@@ -197,8 +205,8 @@ void go_home(int speed)
 /* --------------------------------- Emotion -------------------------------- */
 const std::vector<const char*>& supported_emotions()
 {
-    static const std::vector<const char*> list = {"neutral", "happy", "angry",      "sad",
-                                                  "doubt",   "sleepy", "shy", "speechless"};
+    static const std::vector<const char*> list = {"neutral", "happy", "angry",      "sad",     "doubt",
+                                                  "sleepy",  "shy",   "speechless", "surprise"};
     return list;
 }
 

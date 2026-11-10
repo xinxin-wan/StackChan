@@ -204,6 +204,16 @@ void build_sad(lv_obj_t* p)
     animate(tear, tear_cb, 0, 100, 1500, 0, 0, 400, lv_anim_path_ease_in);
 }
 
+// Surprise: raised brows, wide eyes and a round "O" mouth.
+void build_surprise(lv_obj_t* p)
+{
+    arc(p, kEyeL, 82, 26, 215, 325, 7, kWhite);
+    arc(p, kEyeR, 82, 26, 215, 325, 7, kWhite);
+    blob(p, kEyeL, kEyeY, 28, 28, kWhite);
+    blob(p, kEyeR, kEyeY, 28, 28, kWhite);
+    ring(p, 160, 168, 36, 44, 8, kWhite);
+}
+
 void build_doubt(lv_obj_t* p)
 {
     dot_eyes(p);
@@ -383,6 +393,7 @@ const Face g_faces[] = {
     {"happy", build_happy, Motion::Bob, 8, 450},
     {"angry", build_angry, Motion::Twitch, 4, 70},
     {"sad", build_sad, Motion::Bob, 3, 2000},
+    {"surprise", build_surprise, Motion::Bob, 5, 600},
     {"doubt", build_doubt, Motion::Sway, 6, 1200},
     {"sleepy", build_sleepy, Motion::Bob, 3, 2400},
     {"listening", build_listening, Motion::None, 0, 0},
