@@ -204,11 +204,11 @@ void build_sad(lv_obj_t* p)
     animate(tear, tear_cb, 0, 100, 1500, 0, 0, 400, lv_anim_path_ease_in);
 }
 
-// Surprise: the usual dot eyes and a hollow "o" mouth the size of an eye.
+// Surprise: the usual dot eyes and a big, tall hollow "O" mouth.
 void build_surprise(lv_obj_t* p)
 {
     dot_eyes(p);
-    ring(p, 160, 156, kEyeD, kEyeD, 5, kWhite);
+    ring(p, 160, 172, 48, 60, 8, kWhite);
 }
 
 void build_doubt(lv_obj_t* p)
